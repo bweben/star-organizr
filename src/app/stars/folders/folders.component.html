@@ -1,0 +1,6 @@
+<app-folder-list></app-folder-list>
+<mat-grid-list cols="3" rowHeight="2:1">
+  <mat-grid-tile *ngFor="let star of stars">
+    <app-star-detail [star]="star"></app-star-detail>
+  </mat-grid-tile>
+</mat-grid-list>

@@ -1,0 +1,14 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>{{star?.name}}</mat-card-title>
+    <mat-card-subtitle>{{star?.full_name}}</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <p>
+      {{star?.description}}
+    </p>
+  </mat-card-content>
+  <mat-card-actions>
+    <a mat-button href="{{star?.html_url}}">Repository</a>
+  </mat-card-actions>
+</mat-card>
