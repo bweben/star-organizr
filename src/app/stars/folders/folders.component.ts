@@ -8,15 +8,9 @@ import {Star} from '../../shared/Star';
   styleUrls: ['./folders.component.css']
 })
 export class FoldersComponent implements OnInit {
-  public stars: Star[];
-
-  constructor(private starService: GithubStarService) { }
+  constructor() { }
 
   ngOnInit() {
-    this.starService.getStars('bweben').subscribe((data: Star[]) => {
-      this.stars = data;
-      console.log(data);
-    });
   }
 
 }

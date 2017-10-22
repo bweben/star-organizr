@@ -1,3 +1,29 @@
-<p>
-  folder-list works!
-</p>
+<mat-accordion>
+  <mat-expansion-panel [expanded]="nExpanded === 0" (opened)="nExpanded = 0">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Folders
+      </mat-panel-title>
+      <mat-panel-description>
+        Your folders with your github stars.
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+  </mat-expansion-panel>
+  <mat-expansion-panel [expanded]="nExpanded === 1" (opened)="nExpanded = 1">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        All
+      </mat-panel-title>
+      <mat-panel-description>
+        All your github stars.
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    <mat-list>
+      <mat-list-item *ngFor="let star of stars">
+        <mat-icon mat-list-icon>folder</mat-icon>
+        <h4 mat-line>{{star.full_name}}</h4>
+        <p mat-line> {{star.description}} </p>
+      </mat-list-item>
+    </mat-list>
+  </mat-expansion-panel>
+</mat-accordion>

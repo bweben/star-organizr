@@ -1,0 +1,19 @@
+.col-3 {
+  width: 30%;
+}
+
+.col-7 {
+  width: 70%;
+}
+
+.float-left {
+  float: left;
+}
+
+.float-right {
+  float: right;
+}
+
+.col-10 {
+  width: 100%;
+}

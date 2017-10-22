@@ -5,14 +5,20 @@ import { FolderListComponent } from './folder-list/folder-list.component';
 import { FavouritesComponent } from './favourites/favourites.component';
 import { FoldersComponent } from './folders/folders.component';
 import { NavbarComponent } from './navbar/navbar.component';
-import { MatButtonModule, MatCardModule, MatGridListModule } from '@angular/material';
+import {
+  MatButtonModule, MatCardModule, MatExpansionModule, MatGridListModule, MatIconModule,
+  MatListModule
+} from '@angular/material';
 
 @NgModule({
   imports: [
     CommonModule,
     MatButtonModule,
     MatCardModule,
-    MatGridListModule
+    MatGridListModule,
+    MatIconModule,
+    MatListModule,
+    MatExpansionModule
   ],
   declarations: [StarDetailComponent, FolderListComponent, FavouritesComponent, FoldersComponent, NavbarComponent],
   exports: [FavouritesComponent, FoldersComponent, NavbarComponent]

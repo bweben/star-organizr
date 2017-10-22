@@ -1,1 +1,2 @@
-<app-star-detail></app-star-detail>
+<h1 class="mat-h1 margin-left">Favorites</h1>
+<app-star-detail *ngFor="let star of this.favorites" [star]="star" class="star-middle"></app-star-detail>

@@ -4,4 +4,5 @@ export interface Star {
   full_name: string;
   description: string;
   html_url: string;
+  favorite: boolean;
 }

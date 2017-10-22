@@ -9,9 +9,17 @@ import {Star} from '../../shared/Star';
 export class StarDetailComponent implements OnInit {
   @Input() public star: Star;
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit() {
+  }
+
+  public favorite(): void {
+    if (!this.star) {
+      return;
+    }
+    this.star.favorite = !this.star.favorite;
   }
 
 }

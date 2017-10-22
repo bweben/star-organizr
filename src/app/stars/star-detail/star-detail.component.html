@@ -10,5 +10,6 @@
   </mat-card-content>
   <mat-card-actions>
     <a mat-button href="{{star?.html_url}}">Repository</a>
+    <a mat-button (click)="favorite()"><mat-icon>{{this.star?.favorite ? 'favorite' : 'favorite_border'}}</mat-icon></a>
   </mat-card-actions>
 </mat-card>

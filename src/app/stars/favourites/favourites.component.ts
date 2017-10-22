@@ -8,13 +8,13 @@ import {Star} from '../../shared/Star';
   styleUrls: ['./favourites.component.css']
 })
 export class FavouritesComponent implements OnInit {
-  private favourites: Star[];
+  public favorites: Star[];
 
   constructor(private starService: GithubStarService) { }
 
   ngOnInit() {
     this.starService.getStars('bweben').subscribe((data: Star[]) => {
-      this.favourites = data;
+      this.favorites = data.filter((star: Star) => star.favorite);
     });
   }
 
