@@ -1,0 +1,11 @@
+<h1 mat-dialog-title>Hello</h1>
+<div mat-dialog-content>
+  <p class="mat-body-1">What's your github name?</p>
+  <mat-form-field>
+    <input matInput tabindex="1" [(ngModel)]="data.username">
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button [mat-dialog-close]="data.username" tabindex="2">Ok</button>
+  <button mat-button (click)="close()" tabindex="-2">Cancel</button>
+</div>

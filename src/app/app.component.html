@@ -1,3 +1,5 @@
-<app-navbar></app-navbar>
-<app-favourites></app-favourites>
-<app-folders></app-folders>
+<div *ngIf="username">
+  <app-navbar></app-navbar>
+  <app-favourites></app-favourites>
+  <app-folders></app-folders>
+</div>

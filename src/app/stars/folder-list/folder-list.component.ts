@@ -22,9 +22,8 @@ export class FolderListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.starService.getStars('bweben').subscribe((data: Star[]) => {
+    this.starService.getStars().subscribe((data: Star[]) => {
       this.stars = data.sort((star1: Star, star2: Star) => star1.full_name.localeCompare(star2.full_name));
-      console.log(data);
     });
   }
 

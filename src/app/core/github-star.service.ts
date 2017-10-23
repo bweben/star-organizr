@@ -7,18 +7,29 @@ import {Warehouse} from 'ngx-warehouse';
 
 @Injectable()
 export class GithubStarService extends CoreService {
+  private stars: Star[];
 
   constructor(protected http: HttpClient, protected warehouse: Warehouse) {
     super(http, warehouse);
   }
 
-  public getStars(username: string): Observable<Star[]> {
-    /*this.warehouse.count().subscribe((n: number) => {
-      return super.get(`/users/${username}/starred`) as Observable<Star[]>;
-    }, (error) => {
-      console.log(error);
-    });*/
-    return super.get(`/users/${username}/starred`) as Observable<Star[]>;
+  public getStars(): Observable<Star[]> {
+    const promise: Promise<Star[]> = new Promise((resolve) => {
+      this.warehouse.get(`stars#${this._username}`).subscribe((stars: Star[]) => {
+        if (!stars) {
+          super.get(`/users/${this._username}/starred`).subscribe((data: Star[]) => {
+            this.warehouse.set(`stars#${this._username}`, data);
+            resolve(data);
+          });
+        } else {
+          resolve(stars);
+        }
+      }, (error) => {
+        console.log(error);
+      });
+    });
+    promise.then((data) => this.stars = data);
+    return Observable.fromPromise(promise);
   }
 
 }
