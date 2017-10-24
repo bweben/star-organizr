@@ -22,6 +22,7 @@ export class GithubStarService extends CoreService {
             resolve(data);
           });
         } else {
+
           resolve(stars);
         }
       }, (error) => {
