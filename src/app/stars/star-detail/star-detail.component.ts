@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Star} from '../../shared/Star';
+import {GithubStarService} from '../../core/github-star.service';
 
 @Component({
   selector: 'app-star-detail',
@@ -9,17 +10,14 @@ import {Star} from '../../shared/Star';
 export class StarDetailComponent implements OnInit {
   @Input() public star: Star;
 
-  constructor() {
+  constructor(private starService: GithubStarService) {
   }
 
   ngOnInit() {
   }
 
   public favorite(): void {
-    if (!this.star) {
-      return;
-    }
-    this.star.favorite = !this.star.favorite;
+    this.starService.favourite(this.star);
   }
 
 }

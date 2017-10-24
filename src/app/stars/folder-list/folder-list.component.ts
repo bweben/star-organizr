@@ -15,16 +15,20 @@ export class FolderListComponent implements OnInit {
   public set nExpanded(value: number) {
     this._nExpanded = value;
   }
+
   private _nExpanded = 0;
   public stars: Star[];
 
   constructor(private starService: GithubStarService) {
   }
 
-  ngOnInit() {
-    this.starService.getStars().subscribe((data: Star[]) => {
+  public ngOnInit() {
+    this.starService.stars.subscribe((data: Star[]) => {
       this.stars = data.sort((star1: Star, star2: Star) => star1.full_name.localeCompare(star2.full_name));
     });
   }
 
+  public setFavourite(star: Star): void {
+    this.starService.favourite(star);
+  }
 }

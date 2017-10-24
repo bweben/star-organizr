@@ -13,7 +13,7 @@ export class FavouritesComponent implements OnInit {
   constructor(private starService: GithubStarService) { }
 
   ngOnInit() {
-    this.starService.getStars().subscribe((data: Star[]) => {
+    this.starService.stars.subscribe((data: Star[]) => {
       this.favorites = data.filter((star: Star) => star.favorite);
     });
   }

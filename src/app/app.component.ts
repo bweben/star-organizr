@@ -25,10 +25,12 @@ export class AppComponent implements OnInit {
         dialogRef.afterClosed().subscribe(result => {
           console.log('The dialog was closed');
           this.coreService.username = result;
+          this.coreService.getStars();
           this.username = result;
         });
       } else {
         this.coreService.username = data;
+        this.coreService.getStars();
         this.username = data;
       }
     });

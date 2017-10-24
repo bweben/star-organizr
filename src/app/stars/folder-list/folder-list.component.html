@@ -20,7 +20,7 @@
     </mat-expansion-panel-header>
     <mat-list>
       <mat-list-item *ngFor="let star of stars">
-        <mat-icon mat-list-icon>folder</mat-icon>
+        <a mat-button (click)="setFavourite(star)"><mat-icon>{{this.star?.favorite ? 'favorite' : 'favorite_border'}}</mat-icon></a>
         <h4 mat-line>{{star.full_name}}</h4>
         <p mat-line> {{star.description}} </p>
       </mat-list-item>
