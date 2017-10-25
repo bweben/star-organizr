@@ -5,6 +5,7 @@ import {GithubStarService} from './github-star.service';
 import {HttpClientModule} from '@angular/common/http';
 import {NgxWarehouseModule} from 'ngx-warehouse';
 import {config} from './warehouse-config';
+import {FolderService} from './folder.service';
 
 @NgModule({
   imports: [
@@ -13,6 +14,6 @@ import {config} from './warehouse-config';
     NgxWarehouseModule.configureWarehouse(config)
   ],
   declarations: [],
-  providers: [CoreService, GithubStarService]
+  providers: [CoreService, GithubStarService, FolderService]
 })
 export class CoreModule { }

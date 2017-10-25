@@ -1,9 +1,9 @@
-.col-3 {
-  width: 30%;
+.vw25 {
+  max-width: 25vw;
 }
 
-.col-7 {
-  width: 70%;
+.vw75 {
+  max-width: 75vw;
 }
 
 .float-left {
@@ -12,8 +12,4 @@
 
 .float-right {
   float: right;
-}
-
-.col-10 {
-  width: 100%;
 }
