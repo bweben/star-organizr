@@ -7,8 +7,8 @@ export class Folder {
 
   public name: string;
   private _id: string;
-  public stars: Star[];
-  public children: Folder[];
+  public stars: string[] = [];
+  public children: { [id: number]: Folder } = {};
 
   constructor(name?: string) {
     if (name) {

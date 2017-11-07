@@ -6,6 +6,10 @@ import {CoreModule} from './core/core.module';
 import {StarsModule} from './stars/stars.module';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {SharedModule} from './shared/shared.module';
+import {StoreDevtoolsModule} from '@ngrx/store-devtools';
+import {StoreModule} from '@ngrx/store';
+import {EffectsModule} from '@ngrx/effects';
+import {appReducer, initialState, UsernameEffects} from './model';
 
 @NgModule({
   declarations: [
@@ -16,7 +20,14 @@ import {SharedModule} from './shared/shared.module';
     BrowserAnimationsModule,
     CoreModule,
     StarsModule,
-    SharedModule
+    SharedModule,
+    StoreDevtoolsModule.instrument({
+      maxAge: 25
+    }),
+    StoreModule.forRoot(<any>{app: appReducer}, {initialState}),
+    EffectsModule.forRoot([
+      UsernameEffects
+    ])
   ],
   providers: [],
   bootstrap: [AppComponent]

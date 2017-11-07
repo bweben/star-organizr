@@ -8,38 +8,42 @@ import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 
 @Injectable()
 export class GithubStarService extends CoreService {
-  private starSubject: BehaviorSubject<Star[]> = new BehaviorSubject<Star[]>([]);
-  public stars: Observable<Star[]>;
-  private _stars: Star[];
+    private starSubject: BehaviorSubject<Star[]> = new BehaviorSubject<Star[]>([]);
+    public stars: Observable<Star[]>;
+    private _stars: Star[];
 
-  constructor(protected http: HttpClient, protected warehouse: Warehouse) {
-    super(http, warehouse);
-    this.stars = this.starSubject.asObservable();
-    this.stars.subscribe((data: Star[]) => {
-      this.warehouse.set(`stars#${this._username}`, data);
-    });
-  }
-
-  public getStars(): void {
-    this.warehouse.get(`stars#${this._username}`).subscribe((stars: Star[]) => {
-      if (!stars) {
-        super.get(`/users/${this._username}/starred`).subscribe((data: Star[]) => {
-          this.warehouse.set(`stars#${this._username}`, data);
-          this._stars = data;
-          this.starSubject.next(this._stars);
+    constructor(protected http: HttpClient, protected warehouse: Warehouse) {
+        super(http, warehouse);
+        this.stars = this.starSubject.asObservable();
+        this.stars.subscribe((data: Star[]) => {
+            this.warehouse.set(`stars#${this._username}`, data);
         });
-      } else {
-        this._stars = stars;
-        this.starSubject.next(this._stars);
-      }
-    }, (error) => {
-      console.log(error);
-    });
-  }
+    }
 
-  public favourite(star: Star) {
-    const indx = this._stars.findIndex((val: Star) => val.full_name === star.full_name);
-    this._stars[indx].favorite = !this._stars[indx].favorite;
-    this.starSubject.next(this._stars);
-  }
+    public getStars(username: string): Observable<Star[]> {
+        const promise: Promise<Star[]> = new Promise((resolve, reject) => {
+            this.warehouse.get(`stars#${username}`).subscribe((stars: Star[]) => {
+                if (!stars) {
+                    super.get(`/users/${username}/starred`).subscribe((data: Star[]) => {
+                        this.warehouse.set(`stars#${username}`, data);
+                        this._stars = data;
+                        resolve(data);
+                    });
+                } else {
+                    this._stars = stars;
+                    resolve(stars);
+                }
+            }, (error) => {
+                reject(error);
+            });
+        });
+
+        return Observable.fromPromise(promise);
+    }
+
+    public favourite(star: Star) {
+        const indx = this._stars.findIndex((val: Star) => val.full_name === star.full_name);
+        this._stars[indx].favorite = !this._stars[indx].favorite;
+        this.starSubject.next(this._stars);
+    }
 }

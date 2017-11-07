@@ -6,6 +6,7 @@ import {Star} from '../shared/Star';
 import {Observable} from 'rxjs/Observable';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Folder} from '../shared/folder';
+import {reject} from 'q';
 
 @Injectable()
 export class FolderService extends GithubStarService {
@@ -16,7 +17,6 @@ export class FolderService extends GithubStarService {
   public set username(value: string) {
     this.warehouse.set('username', value);
     this._username = value;
-    this.getFolders();
   }
 
   /*
@@ -39,15 +39,19 @@ export class FolderService extends GithubStarService {
     this.folders = this.folderSubject.asObservable();
   }
 
-  private getFolders(): void {
-    this.warehouse.get(`folders#${this._username}`).subscribe((folders: Folder[]) => {
-      if (!folders) {
-        this.warehouse.set(`folders#${this._username}`, new Folder('Folder'));
-      } else {
-        this._folders = folders;
-        this.folderSubject.next(this._folders);
-      }
+  public getFolders(username: string): Observable<Folder[]> {
+    const promise: Promise<Folder[]> = new Promise((resolve, reject) => {
+        this.warehouse.get(`folders#${username}`).subscribe((folders: Folder[]) => {
+            if (!folders) {
+                folders = [new Folder('Folder')];
+                this.warehouse.set(`folders#${username}`, folders);
+            } else {
+                this._folders = folders;
+            }
+            resolve(folders);
+        });
     });
+    return Observable.fromPromise(promise);
   }
 
 }

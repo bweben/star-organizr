@@ -6,10 +6,8 @@ import {Warehouse} from 'ngx-warehouse';
 @Injectable()
 export class CoreService {
   public set username(value: string) {
-    console.log(value);
     this.warehouse.set('username', value);
     this._username = value;
-    console.log(this._username);
   }
 
   private readonly url: string = 'https://api.github.com';

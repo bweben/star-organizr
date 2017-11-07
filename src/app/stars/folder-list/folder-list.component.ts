@@ -3,6 +3,8 @@ import {GithubStarService} from '../../core/github-star.service';
 import {Star} from '../../shared/Star';
 import {FolderService} from '../../core/folder.service';
 import {Folder} from '../../shared/folder';
+import {Store} from '@ngrx/store';
+import {AppState} from '../../model';
 
 @Component({
   selector: 'app-folder-list',
@@ -22,21 +24,25 @@ export class FolderListComponent implements OnInit {
   public stars: Star[];
   public folders: Folder[];
 
-  constructor(private starService: GithubStarService,
-              private folderService: FolderService) {
+  constructor(private store: Store<AppState>) {
   }
 
   public ngOnInit() {
-    this.starService.stars.subscribe((data: Star[]) => {
-      this.stars = data.sort((star1: Star, star2: Star) => star1.full_name.localeCompare(star2.full_name));
+    this.store.select('stars').subscribe((stars: Star[]) => {
+      this.stars = stars.sort((star1: Star, star2: Star) => star1.full_name.localeCompare(star2.full_name));
     });
 
-    this.folderService.folders.subscribe((data: Folder[]) => {
-      this.folders = data;
+    this.store.select('folders').subscribe((folders: Folder[]) => {
+      this.folders = folders;
     });
   }
 
   public setFavourite(star: Star): void {
-    this.starService.favourite(star);
+    this.store.dispatch({
+      type: 'FAVORISE_STAR',
+      payload: {
+        full_name: star.full_name
+      }
+    });
   }
 }

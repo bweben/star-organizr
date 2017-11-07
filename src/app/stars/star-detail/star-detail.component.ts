@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Star} from '../../shared/Star';
-import {GithubStarService} from '../../core/github-star.service';
+import {Store} from '@ngrx/store';
+import {AppState} from '../../model';
 
 @Component({
   selector: 'app-star-detail',
@@ -10,14 +11,19 @@ import {GithubStarService} from '../../core/github-star.service';
 export class StarDetailComponent implements OnInit {
   @Input() public star: Star;
 
-  constructor(private starService: GithubStarService) {
+  constructor(private store: Store<AppState>) {
   }
 
   ngOnInit() {
   }
 
   public favorite(): void {
-    this.starService.favourite(this.star);
+    this.store.dispatch({
+        type: this.star.favorite ? 'UNFAVORISE_STAR' : 'FAVORISE_STAR',
+        payload: {
+            full_name: this.star.full_name
+        }
+    });
   }
 
 }
