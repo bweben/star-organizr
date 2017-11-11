@@ -3,17 +3,21 @@ import { CommonModule } from '@angular/common';
 import {CoreService} from './core.service';
 import {GithubStarService} from './github-star.service';
 import {HttpClientModule} from '@angular/common/http';
-import {NgxWarehouseModule} from 'ngx-warehouse';
-import {config} from './warehouse-config';
 import {FolderService} from './folder.service';
+import {NgForageConfig, NgForageModule} from 'ngforage';
+import {config} from './warehouse-config';
 
 @NgModule({
   imports: [
     CommonModule,
     HttpClientModule,
-    NgxWarehouseModule.configureWarehouse(config)
+    NgForageModule
   ],
   declarations: [],
   providers: [CoreService, GithubStarService, FolderService]
 })
-export class CoreModule { }
+export class CoreModule {
+  constructor(conf: NgForageConfig) {
+    conf.configure(config);
+  }
+}

@@ -3,8 +3,9 @@ import {CoreService} from './core.service';
 import {Observable} from 'rxjs/Observable';
 import {Star} from '../shared/Star';
 import {HttpClient} from '@angular/common/http';
-import {Warehouse} from 'ngx-warehouse';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import {NgForage} from 'ngforage';
+import {reject} from 'q';
 
 @Injectable()
 export class GithubStarService extends CoreService {
@@ -12,33 +13,36 @@ export class GithubStarService extends CoreService {
     public stars: Observable<Star[]>;
     private _stars: Star[];
 
-    constructor(protected http: HttpClient, protected warehouse: Warehouse) {
+    constructor(protected http: HttpClient, protected warehouse: NgForage) {
         super(http, warehouse);
         this.stars = this.starSubject.asObservable();
         this.stars.subscribe((data: Star[]) => {
-            this.warehouse.set(`stars#${this._username}`, data);
+            this.warehouse.setItem(`stars#${this._username}`, data);
         });
     }
 
-    public getStars(username: string): Observable<Star[]> {
+    public getStars(username: string): Promise<Star[]> {
         const promise: Promise<Star[]> = new Promise((resolve, reject) => {
-            this.warehouse.get(`stars#${username}`).subscribe((stars: Star[]) => {
-                if (!stars) {
-                    super.get(`/users/${username}/starred`).subscribe((data: Star[]) => {
-                        this.warehouse.set(`stars#${username}`, data);
+            this.getStarsInternal(username).then((data) => {
+                if (!data || data.length <= 0) {
+                    super.get(`/users/${username}/starred`).subscribe((stars$: Star[]) => {
+                        this.warehouse.setItem(`stars#${username}`, data);
                         this._stars = data;
-                        resolve(data);
+                        resolve(this._stars);
                     });
                 } else {
-                    this._stars = stars;
-                    resolve(stars);
+                    this._stars = data;
+                    resolve(this._stars);
                 }
-            }, (error) => {
-                reject(error);
             });
         });
+        return promise;
+    }
 
-        return Observable.fromPromise(promise);
+    public async getStarsInternal(username: string): Promise<Star[]> {
+        const stars = (await this.warehouse.getItem(`stars#${username}`)) as Star[];
+
+        return stars;
     }
 
     public favourite(star: Star) {

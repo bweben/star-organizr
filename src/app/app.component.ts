@@ -15,7 +15,7 @@ export class AppComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.coreService.needUsername().subscribe((data) => {
+        this.coreService.needUsername().then((data) => {
             if (!data) {
                 const dialogRef = this.dialog.open(UsernameAskComponent, {
                     width: '250px',

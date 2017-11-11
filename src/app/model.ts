@@ -5,6 +5,7 @@ import {Actions, Effect} from '@ngrx/effects';
 import {GithubStarService} from './core/github-star.service';
 import {of} from 'rxjs/observable/of';
 import {FolderService} from './core/folder.service';
+import {Observable} from 'rxjs/Observable';
 
 export interface PayloadAction<T> extends Action {
     payload: T;
@@ -86,21 +87,39 @@ export function appReducer(state: AppState, action: PayloadAction<any>): AppStat
 }
 
 export interface Username {
-    type: 'USERNAME_CHANGED';
+    type: 'USERNAME_CHANGED' | 'UPDATE_STARS' | 'UPDATE_FOLDERS';
     payload: { name: string };
 }
 
 @Injectable()
 export class UsernameEffects {
     @Effect() loadStars = this.actions.ofType('USERNAME_CHANGED')
-        .flatMap((a: Username) => [
-            this.githubService.getStars(a.payload.name).switchMap((stars: Star[]) => {
-                return of({type: 'STARS_UPDATED', payload: stars});
-            }),
-            this.folderService.getFolders(a.payload.name).switchMap((folders: Folder[]) => {
-                return of({type: 'FOLDERS_UPDATED', payload: folders});
-            })
-        ]);
+        .flatMap((a: Username) => {
+            return [
+                {
+                    type: 'UPDATE_STARS',
+                    payload: a.payload
+                },
+                {
+                    type: 'UPDATE_FOLDERS',
+                    payload: a.payload
+                }
+            ];
+        });
+
+    @Effect() updateStars = this.actions.ofType('UPDATE_STARS')
+        .switchMap((a: Username) => {
+            return Observable.fromPromise(this.githubService.getStars(a.payload.name)).switchMap((stars: Star[]) => {
+                return of({type: 'STARS_UPDATED', payload: {stars}});
+            });
+        });
+
+    @Effect() updateFolders = this.actions.ofType('UPDATE_FOLDERS')
+        .switchMap((a: Username) => {
+            return Observable.fromPromise(this.folderService.getFolders(a.payload.name)).switchMap((folders: Folder[]) => {
+                return of({type: 'FOLDERS_UPDATED', payload: {folders}});
+            });
+        });
 
     constructor(private actions: Actions,
                 private store: Store<State>,

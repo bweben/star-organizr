@@ -12,25 +12,25 @@ import {EffectsModule} from '@ngrx/effects';
 import {appReducer, initialState, UsernameEffects} from './model';
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
-  imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    CoreModule,
-    StarsModule,
-    SharedModule,
-    StoreDevtoolsModule.instrument({
-      maxAge: 25
-    }),
-    StoreModule.forRoot(<any>{app: appReducer}, {initialState}),
-    EffectsModule.forRoot([
-      UsernameEffects
-    ])
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
+    declarations: [
+        AppComponent
+    ],
+    imports: [
+        BrowserModule,
+        BrowserAnimationsModule,
+        CoreModule,
+        StarsModule,
+        SharedModule,
+        StoreModule.forRoot(<any>{app: appReducer}, {initialState}),
+        StoreDevtoolsModule.instrument({
+            maxAge: 25
+        }),
+        EffectsModule.forRoot([
+            UsernameEffects
+        ])
+    ],
+    providers: [],
+    bootstrap: [AppComponent]
 })
 export class AppModule {
 }

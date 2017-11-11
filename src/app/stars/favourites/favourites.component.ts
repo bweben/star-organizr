@@ -1,8 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {GithubStarService} from '../../core/github-star.service';
 import {Star} from '../../shared/Star';
 import {Store} from '@ngrx/store';
-import {AppState} from '../../model';
+import {AppState, State} from '../../model';
 
 @Component({
     selector: 'app-favourites',
@@ -10,14 +9,16 @@ import {AppState} from '../../model';
     styleUrls: ['./favourites.component.css']
 })
 export class FavouritesComponent implements OnInit {
-    public favorites: Star[];
+    public favorites: Star[] = [];
 
-    constructor(private store: Store<AppState>) {
+    constructor(private store: Store<State>) {
     }
 
     ngOnInit() {
-        this.store.select('stars').subscribe((data: Star[]) => {
-            this.favorites = data.filter((star: Star) => star.favorite);
+        this.store.select('app').subscribe((data: AppState) => {
+            if (data && data.stars) {
+                this.favorites = data.stars.filter((star: Star) => star.favorite);
+            }
         });
     }
 
