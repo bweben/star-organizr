@@ -1,3 +1,9 @@
 <nav>
   <a mat-button>Main</a>
+  <mat-form-field class="username-form-field">
+    <input matInput type="text" [(ngModel)]="username"/>
+    <button mat-button *ngIf="username" matSuffix mat-icon-button aria-label="Clear" (click)="load()">
+      <mat-icon>done</mat-icon>
+    </button>
+  </mat-form-field>
 </nav>

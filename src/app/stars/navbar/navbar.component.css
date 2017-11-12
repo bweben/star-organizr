@@ -2,3 +2,7 @@ nav {
   background-color: #eceff1;
   padding: 5px;
 }
+
+.username-form-field {
+  width: 200px;
+}

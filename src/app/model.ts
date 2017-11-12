@@ -42,6 +42,10 @@ export const initialState: State = {
 
 export function appReducer(state: AppState, action: PayloadAction<any>): AppState {
     switch (action.type) {
+        case 'USERNAME_CHANGED': {
+            const username = {username: action.payload.name};
+            return {...state, ...username};
+        }
         case 'STARS_UPDATED': {
             return {...state, ...action.payload};
         }
@@ -49,12 +53,12 @@ export function appReducer(state: AppState, action: PayloadAction<any>): AppStat
             return {...state, ...action.payload};
         }
         case 'FAVORISE_STAR': {
-            const stars = {...state.stars};
+            const stars = state.stars;
             stars.find((star: Star) => star.full_name === action.payload.full_name).favorite = true;
             return {...state, stars};
         }
         case 'UNFAVORISE_STAR': {
-            const stars = {...state.stars};
+            const stars = state.stars;
             stars.find((star: Star) => star.full_name === action.payload.full_name).favorite = false;
             return {...state, stars};
         }

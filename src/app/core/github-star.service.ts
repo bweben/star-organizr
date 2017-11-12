@@ -25,9 +25,10 @@ export class GithubStarService extends CoreService {
         const promise: Promise<Star[]> = new Promise((resolve, reject) => {
             this.getStarsInternal(username).then((data) => {
                 if (!data || data.length <= 0) {
-                    super.get(`/users/${username}/starred`).subscribe((stars$: Star[]) => {
-                        this.warehouse.setItem(`stars#${username}`, data);
-                        this._stars = data;
+                    super.get(`/users/${username}/starred?page=1&per_page=100`).subscribe((stars$: Star[]) => { // max 100 per page
+                        console.log(stars$);
+                        this.warehouse.setItem(`stars#${username}`, stars$);
+                        this._stars = stars$;
                         resolve(this._stars);
                     });
                 } else {
